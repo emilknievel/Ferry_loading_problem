@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 
 public class FerryLoading {
     public static void main(String[] args) throws IOException {
-        int testCases   = 0;  // Can be any number 1 <= c <= 20
-        int boatLength  = 0; // Can be any number 1 <= l <= 500 (meters)
-        int carCount    = 0;   // Can be any number 1 <= m <= 10000
-        int carLength   = 0;  // 1 <= cl <= 100000 (centimeters)
+        int testCases   = 0;    // Can be any number 1 <= c <= 20
+        int boatLength  = 0;    // Can be any number 1 <= l <= 500 (meters)
+        int carCount    = 0;    // Can be any number 1 <= m <= 10000
+        int carLength   = 0;    // 1 <= cl <= 100000 (centimeters)
         String bank;
 
         // Reads the input
@@ -29,6 +29,10 @@ public class FerryLoading {
 
                 System.out.println(carLength + " " + bank);
             }
+
+            // =================
+            // Output goes here!
+            // =================
         }
     }
 }
