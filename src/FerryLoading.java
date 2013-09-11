@@ -6,12 +6,13 @@ import java.util.Queue;
 
 public class FerryLoading {
     public static void main(String[] args) throws IOException {
-        int testCases   = 0;    // Can be any number 1 <= c <= 20
-        int boatLength  = 0;    // Can be any number 1 <= l <= 500 (meters)
-        int carCount    = 0;    // Can be any number 1 <= m <= 10000
-        int carLength   = 0;    // 1 <= cl <= 100000 (centimeters)
-        int transfers = 0;      // The number of transfers required
+        int testCases       = 0;    // Can be any number 1 <= c <= 20
+        int boatLength      = 0;    // Can be any number 1 <= l <= 500 (meters)
+        int carCount        = 0;    // Can be any number 1 <= m <= 10000
+        int carLength       = 0;    // 1 <= cl <= 100000 (centimeters)
+        int caseCount       = 0;    //number of cases
         String bank;
+        boolean emptyFerry = true;
 
         Queue<Car> leftBank = new LinkedList<Car>();
         Queue<Car> rightBank = new LinkedList<Car>();
@@ -22,11 +23,12 @@ public class FerryLoading {
 
         String caseString = input.readLine();
         testCases = Integer.valueOf(caseString);
+        int crossCount[]    = new int[testCases]; // The number of transfers required
         for (int i = 0; i < testCases; i++) {
             String line1 = input.readLine();
             boatLength  = Integer.valueOf(line1.split(" ")[0]) * 100; // (to cm)
             carCount    = Integer.valueOf(line1.split(" ")[1]);
-            System.out.println(boatLength + " " + carCount);
+            crossCount[i] = 0;
 
             for (int j = 0; j < carCount; j++) {
                 String line2 = input.readLine();
@@ -38,18 +40,46 @@ public class FerryLoading {
 
                 if (cars[j].getBank().equals("left")) {
                     leftBank.add(cars[j]);
-                    System.out.println(leftBank.element().getLength() + " " + leftBank.element().getBank());
-                    leftBank.remove();
                 } else {
                     rightBank.add(cars[j]);
-                    System.out.println(rightBank.element().getLength() + " " + rightBank.element().getBank());
-                    rightBank.remove();
                 }
             }
 
-            // =================
-            // Output goes here!
-            // =================
+            int roomLeft = boatLength;
+            while (!leftBank.isEmpty() || !rightBank.isEmpty()) {
+                while (!leftBank.isEmpty() &&
+                        ((roomLeft - leftBank.element().getLength()) >= 0)) {
+                    roomLeft -= leftBank.element().getLength();
+                    leftBank.remove();
+                    emptyFerry = false;
+                }
+                if (!rightBank.isEmpty() || !emptyFerry) {
+                    crossCount[i] += 1;
+                }
+                roomLeft = boatLength;
+                emptyFerry = true;
+
+                while (!rightBank.isEmpty() &&
+                        ((roomLeft - rightBank.element().getLength()) >= 0)) {
+                    roomLeft -= rightBank.element().getLength();
+                    rightBank.remove();
+                    emptyFerry = false;
+                }
+                if (!leftBank.isEmpty() || !emptyFerry) {
+                    crossCount[i] += 1;
+                }
+                roomLeft = boatLength;
+                emptyFerry = true;
+            }
+
+            caseCount += 1;
+        }
+
+        // =================
+        // Output goes here!
+        // =================
+        for (int i = 0; i < caseCount; i++) {
+            System.out.println(crossCount[i]);
         }
     }
 }
